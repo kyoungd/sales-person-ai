@@ -27,23 +27,40 @@ const ws = new WebSocket(
 );
 
 const rl = readline.createInterface({ input, output });
+let pendingResponseResolve;
 
 ws.on("open", async () => {
   console.log(`Connected to OpenAI Realtime API with model ${model}`);
   ws.send(JSON.stringify(createSessionUpdateEvent({ productName })));
 
-  while (true) {
-    const prompt = await rl.question("you> ");
+  while (ws.readyState === WebSocket.OPEN) {
+    let prompt;
+    try {
+      prompt = await rl.question("you> ");
+    } catch {
+      break;
+    }
+
     if (!prompt || prompt.trim().toLowerCase() === "exit") {
       break;
     }
 
     ws.send(JSON.stringify(createUserMessageEvent(prompt)));
     ws.send(JSON.stringify(createResponseEvent()));
+
+    await new Promise((resolve) => {
+      pendingResponseResolve = resolve;
+    });
+
+    if (ws.readyState !== WebSocket.OPEN) {
+      break;
+    }
   }
 
   rl.close();
-  ws.close();
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.close();
+  }
 });
 
 ws.on("message", (data) => {
@@ -61,15 +78,21 @@ ws.on("message", (data) => {
 
   if (event.type === "response.text.done") {
     process.stdout.write("\n");
+    pendingResponseResolve?.();
+    pendingResponseResolve = undefined;
   }
 
   if (event.type === "error") {
     console.error("Realtime API error:", event.error?.message || event);
+    pendingResponseResolve?.();
+    pendingResponseResolve = undefined;
   }
 });
 
 ws.on("close", () => {
   console.log("Disconnected from OpenAI Realtime API");
+  pendingResponseResolve?.();
+  pendingResponseResolve = undefined;
 });
 
 ws.on("error", (error) => {
