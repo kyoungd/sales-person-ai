@@ -80,6 +80,14 @@ performance car and turns heads like nothing modern can.
   and secure escrow payment
 - Financing available through our classic-car lending partners; trade-ins
   considered
+- Price and any offers are discussed directly with our sales specialist on
+  the callback — Ava does not negotiate.
+- Test drives by appointment for serious buyers, accompanied by an Ironwood
+  team member.
+- A $2,500 fully refundable deposit holds the car for 7 days while you
+  arrange inspection, financing, or shipping.
+- The original drivetrain was not with the car when Ironwood acquired it;
+  the sale includes the new LS3 drivetrain exactly as documented.
 
 ## Why This Price
 
