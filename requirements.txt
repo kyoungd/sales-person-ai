@@ -1,0 +1,2 @@
+pipecat-ai[websocket,openai,runner]>=1.4.0
+python-dotenv
