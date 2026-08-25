@@ -1,0 +1,21 @@
+{
+  "name": "sales-person-ai",
+  "version": "1.0.0",
+  "description": "Sales person AI using OpenAI Realtime API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://localhost:26831/kyoungd/sales-person-ai"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.21.3"
+  },
+  "type": "module"
+}
