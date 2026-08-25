@@ -17,6 +17,9 @@ performance car and turns heads like nothing modern can.
 - **Interior:** Full custom — saddle-tan leather over new foam, matching door
   panels and console
 - **Mileage since build:** 1,278 miles (break-in and dyno tuning only)
+- **Odometer reading:** 54,200 miles — true lifetime mileage is unverified, as
+  is normal for a 55-year-old car (mileage-exempt title); every wear component
+  on the car is new as of the build
 - **Build completed:** 2025
 - **Documented investment:** $164,300 in receipts (all included in the sale)
 
@@ -28,6 +31,8 @@ performance car and turns heads like nothing modern can.
 - **Rear end:** Fully rebuilt Dana 44 with 3.70 gears, new axles and bearings
 - **Fuel system:** Modern EFI with new stainless-steel tank, in-tank pump, and
   braided stainless lines
+- **Fuel:** Runs on 91-octane premium pump gas — no additives or race fuel
+  needed
 - **Exhaust:** Custom 2.5" stainless system with X-pipe — deep classic V8 sound
   without drone
 - **Cooling:** Aluminum performance radiator with dual electric fans — no
@@ -76,6 +81,13 @@ performance car and turns heads like nothing modern can.
 - Worldwide shipping available at buyer's cost: enclosed door-to-door
   transport in the US and Canada, enclosed container sea freight or air
   freight internationally with export paperwork and customs handled
+- Typical enclosed transport costs: $1,200–$1,800 within the West Coast,
+  $1,800–$2,500 cross-country US and Canada; international enclosed container
+  sea freight typically $6,500–$9,500 door-to-door depending on destination —
+  exact quotes from the sales specialist
+- As a 1969 vehicle the car is smog-exempt in California. Registration and
+  emissions rules for engine-swapped classics vary by state and country — the
+  sales specialist can advise for your location on the callback.
 - International buyers welcome: video walkarounds, independent inspections,
   and secure escrow payment
 - Financing available through our classic-car lending partners; trade-ins

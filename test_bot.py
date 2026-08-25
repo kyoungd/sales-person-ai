@@ -2,7 +2,7 @@ import asyncio
 import json
 import tempfile
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -73,12 +73,30 @@ class SystemInstructionTest(unittest.TestCase):
     def test_contains_data_persona_and_multilingual_rule(self):
         car = "UNIQUE-CAR-MARKER 1969 Corvette Stingray $119,950"
         company = "UNIQUE-COMPANY-MARKER Ironwood Custom Classics"
-        instruction = build_system_instruction(car, company)
+        now = datetime(2026, 8, 25, 21, 40, tzinfo=timezone.utc)
+        instruction = build_system_instruction(car, company, now)
 
         self.assertIn(car, instruction)          # listing data verbatim
         self.assertIn(company, instruction)      # company data verbatim
         self.assertIn("Ava", instruction)        # persona name
         self.assertIn("language", instruction)   # multilingual rule present
+
+    def test_contains_current_datetime_in_pacific_summer(self):
+        # 21:40 UTC on Aug 25 2026 is 2:40 PM PDT the same day
+        now = datetime(2026, 8, 25, 21, 40, tzinfo=timezone.utc)
+        instruction = build_system_instruction("car", "company", now)
+
+        self.assertIn("Tuesday, August 25, 2026", instruction)
+        self.assertIn("2:40 PM", instruction)
+        self.assertIn("Pacific", instruction)
+
+    def test_contains_current_datetime_in_pacific_winter(self):
+        # 20:00 UTC on Jan 15 2026 is 12:00 PM PST the same day
+        now = datetime(2026, 1, 15, 20, 0, tzinfo=timezone.utc)
+        instruction = build_system_instruction("car", "company", now)
+
+        self.assertIn("Thursday, January 15, 2026", instruction)
+        self.assertIn("12:00 PM", instruction)
 
 
 if __name__ == "__main__":

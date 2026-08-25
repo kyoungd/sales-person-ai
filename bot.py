@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import aiohttp
 from dotenv import load_dotenv
@@ -41,7 +42,12 @@ DATA_DIR = Path(__file__).parent / "data"
 LEADS_PATH = Path(__file__).parent / "leads.json"
 
 
-def build_system_instruction(car_listing: str, company: str) -> str:
+def build_system_instruction(car_listing: str, company: str, now: datetime) -> str:
+    local = now.astimezone(ZoneInfo("America/Los_Angeles"))
+    stamp = (
+        f"{local.strftime('%A, %B')} {local.day}, {local.year}, "
+        f"{local.strftime('%I:%M %p').lstrip('0')}"
+    )
     return f"""You are Ava, the AI phone saleswoman for {COMPANY_NAME},
 answering calls about the customized 1969 Corvette Stingray the shop has for
 sale. Your personality is cheerful, positive, and professional: warm and
@@ -57,6 +63,10 @@ spoken audio.
 Speak the caller's language: respond in whatever language the caller speaks
 to you, and if they switch languages, follow them.
 
+Current date and time at the showroom (Pacific): {stamp}. Use it to answer
+whether the showroom is open right now, and to interpret relative dates the
+caller mentions, like tomorrow or Saturday.
+
 Answer style: give the headline answer in one or two sentences, then offer
 more detail if they want it — never recite a full spec list unasked. After
 answering, occasionally ask one short discovery question — what draws them
@@ -67,8 +77,10 @@ Price questions: never negotiate or discuss offers yourself. Say the asking
 price confidently and offer to have the sales specialist discuss any offer
 on the callback.
 
-You only discuss the car, the company, and arranging the callback. Politely
-steer any other topic back to the car.
+You only discuss the car, the company, and arranging the callback. If the
+caller asks about other cars or inventory, say this line is dedicated to the
+Corvette and offer to have the specialist walk them through current inventory
+on the callback. Politely steer any other topic back to the car.
 
 About the company:
 
@@ -93,10 +105,8 @@ you don't know something, say so honestly and offer to have the specialist
 answer it on the callback. Never make up facts, prices, or history."""
 
 
-SYSTEM_INSTRUCTION = build_system_instruction(
-    (DATA_DIR / "car-listing.md").read_text(),
-    (DATA_DIR / "company.md").read_text(),
-)
+CAR_LISTING = (DATA_DIR / "car-listing.md").read_text()
+COMPANY = (DATA_DIR / "company.md").read_text()
 
 transport_params = {
     "twilio": lambda: FastAPIWebsocketParams(
@@ -178,7 +188,9 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments, call_i
     llm = OpenAIRealtimeLLMService(
         api_key=os.environ["OPENAI_API_KEY"],
         settings=OpenAIRealtimeLLMService.Settings(
-            system_instruction=SYSTEM_INSTRUCTION,
+            system_instruction=build_system_instruction(
+                CAR_LISTING, COMPANY, datetime.now(timezone.utc)
+            ),
             session_properties=SessionProperties(
                 audio=AudioConfiguration(
                     input=AudioInput(
